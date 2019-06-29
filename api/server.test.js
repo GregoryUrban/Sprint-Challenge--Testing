@@ -90,7 +90,61 @@ describe('endpoints', () => {
        
     })
 
+    describe('post /games', () => {
 
+        afterEach(() => {
+            data.remove();
+        });
+
+        it('201 response', async () => {
+            const body = {
+                title: 'Pong',
+                genre: 'Arcade',
+                releaseYear: 1980
+            }
+            const res = await supertest(server).post(POST_GAMES).send(body);
+            expect(res.status).toBe(201);
+        });
+
+        it('json response', async () => {
+            const body = {
+                title: 'Pong',
+                genre: 'Arcade',
+                releaseYear: 1974
+            }
+            const res = await supertest(server).post(POST_GAMES).send(body);
+            expect(res.type).toBe('application/json');
+        });
+
+        it('id of new game response', async () => {
+            const body = {
+                title: 'Pong',
+                genre: 'Arcade',
+                releaseYear: 1974
+            }
+            const res = await supertest(server).post(POST_GAMES).send(body);
+            expect(res.body).toEqual({ id: 1 });
+        });
+
+        it('422 if missing title response', async () => {
+            const body = {
+                genre: 'Arcade',
+                releaseYear: 1974
+            }
+            const res = await supertest(server).post(POST_GAMES).send(body);
+            expect(res.status).toBe(422);
+        });
+
+        it('422 if missing genre response', async () => {
+            const body = {
+                title: 'Pong',
+                releaseYear: 1974
+            }
+            const res = await supertest(server).post(POST_GAMES).send(body);
+            expect(res.status).toBe(422);
+        });
+
+    });
 
 
 
