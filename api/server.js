@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const data = ('../data.js');
+const data = require('../data');
 
 const server = express();
 server.use(express.json());
@@ -8,9 +8,14 @@ server.use(express.json());
 const GET_GAMES = '/games';
 const POST_GAMES = '/games';
 
-server.get('/', (req,res) => {
-    res.status(200).json({ api: 'up' })
-})
+server.get('/', (req, res) => {
+    res.status(200).json({ api: 'up' });
+});
+
+server.get(GET_GAMES, (req, res) => {
+  const games = data.list();
+  res.status(200).json(games);
+});
 
 
 module.exports = server;
